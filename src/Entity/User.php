@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+#[ApiResource()]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -18,6 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 180)]
+    private ?string $name = null;
 
     /**
      * @var list<string> The user roles
@@ -31,6 +37,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToMany(targetEntity: Transcription::class, mappedBy: "user", orphanRemoval: true)]
+    private $transcriptions;
+
+    public function __construct()
+    {
+        $this->transcriptions = new ArrayCollection();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -48,6 +62,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Get the value of name
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     */
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
     /**
      * A visual identifier that represents this user.
      *
@@ -105,4 +136,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * Get the value of transcriptions
+     */
+    public function getTranscriptions()
+    {
+        return $this->transcriptions;
+    }
+
+    /**
+     * Set the value of transcriptions
+     */
+    public function setTranscriptions($transcriptions): self
+    {
+        $this->transcriptions = $transcriptions;
+
+        return $this;
+    }
+
 }
