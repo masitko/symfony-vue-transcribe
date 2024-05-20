@@ -1,51 +1,30 @@
-# Symfony Docker
+## Symfony 7 API + Vue 3 SPA + AWS Lambda
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
+Example of a Symfony 7 API with a TypeScript Vue 3 frontend, using JWT tokens for user's authentication and
+employing AWS Lambda function to automatically transcribe uploaded to S3 bucket voice files to text
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+How does it work:
+1. User needs to register and login to the frontend
+2. There is an option to upload a voice file (*.mp3 or *.wav)
+3. The file is then uploaded straight to the S3 bucket
+4. Once the file is uploaded, the S3 ObjectCreated event triggers our Lambda function to start
+5. Lambda function creates self-signed URL to the uploaded file, so it can be accesses for a limited period of time by an external service
+6. The same function creates transcript request to the Assembly AI to process the file and provides a webhook URL to notify when the job is done.
+7. Lambda function sends another request to a Symfony backend webhook providing job ID for the transcription correspondig to the uploaded file
+8. Once the job is done Assebly AI notify Symfony backend that the job is done by calling provided earlier webhook.
+9. Symfony backend matches ID provided by Labda function and Assembly AI to update the record with the transcription 
+
 
 ## Getting Started
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull always -d --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+This project uses (nearly) official Symfony docker project to run local environment.
+You can check how to use it [here](https://github.com/dunglas/symfony-docker)
 
-## Features
+Folder vue-ts contains the frontend Vue SPA 
+This is a standard Vue installation so you can use [Vite](https://vitejs.dev/) to run it locally
 
-* Production, development and CI ready
-* Just 1 service by default
-* Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-* [Vulcain](https://vulcain.rocks) support
-* Native [XDebug](docs/xdebug.md) integration
-* Super-readable configuration
+Lambda function is in the lambda-ts folder.
+You can read how to install and use AWS SAM CLI [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
 
-**Enjoy!**
+If you want to test it locally you can use [ngrok](https://ngrok.com/) to expose local backend to the external services
 
-## Docs
-
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
-
-## License
-
-Symfony Docker is available under the MIT License.
-
-## Credits
-
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
