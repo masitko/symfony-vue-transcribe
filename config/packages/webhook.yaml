@@ -1,0 +1,9 @@
+framework:
+  webhook:
+    routing:
+      lambda:
+        service: App\Webhook\LambdaRequestParser
+        secret: '%env(LAMBDA_WEBHOOK_ACCESS_KEY)%'
+      assembly:
+        service: App\Webhook\AssemblyRequestParser
+        secret: '%env(ASSEMBLY_WEBHOOK_ACCESS_KEY)%'
