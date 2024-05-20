@@ -1,0 +1,5 @@
+env.json
+
+.aws-sam
+node_modules
+sam-app
