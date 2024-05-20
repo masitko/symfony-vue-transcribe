@@ -13,14 +13,24 @@ declare global {
   }
 
   interface IUser {
-    _id?: number;
     id?: number;
     name: string;
     password?: string;
     email: string;
     roles?: IRole[];
     roleNames?: RoleNames[];
-    accessToken: string;
+    accessToken?: string;
+  }
+
+  interface ITranscription {
+    id?: number;
+    name: string;
+    description?: string;
+    file: File;
+    body?: string;
+    storage_info?: object;
+    createdAt?: string;
+    updatedAt?: string;
   }
 
   interface IAUthState {

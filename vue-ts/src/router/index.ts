@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
+import RegisterUserPage from '../components/RegisterUserPage.vue';
 import LoginPage from '../components/LoginPage.vue';
-import RegisterPage from '../components/RegisterPage.vue';
 import ProfilePage from '../components/ProfilePage.vue';
 import UsersPage from '../components/UsersPage.vue';
+import TranscriptionsPage from '../components/TranscriptionsPage.vue';
+import TranscriptionAddPage from '../components/TranscriptionAddPage.vue';
+
 import UserEdit from '../components/UserEdit.vue';
 
 const router = createRouter({
@@ -21,7 +24,7 @@ const router = createRouter({
     },
     {
       path: '/register',
-      component: RegisterPage
+      component: RegisterUserPage
     },
     {
       path: '/profile',
@@ -38,13 +41,15 @@ const router = createRouter({
       component: UserEdit
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
+      path: '/transcriptions',
+      name: 'transcriptions',
+      component: TranscriptionsPage
+    },
+    {
+      path: '/transcription/add',
+      name: 'transcription-add',
+      component: TranscriptionAddPage
+    },
   ]
 })
 

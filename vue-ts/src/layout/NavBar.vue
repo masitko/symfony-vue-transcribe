@@ -30,6 +30,9 @@
         <a class="navbar-item">
           <router-link v-if="currentUser" to="/users" class="nav-link">Users</router-link>
         </a>
+        <a class="navbar-item">
+          <router-link v-if="currentUser" to="/transcriptions" class="nav-link">Transcriptions</router-link>
+        </a>
       </div>
 
       <div v-if="!currentUser" class="navbar-end">

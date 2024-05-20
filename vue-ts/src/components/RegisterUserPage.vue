@@ -37,7 +37,6 @@
         </div>
       </form>
 
-
       <div v-if="message" class="alert mt-5" :class="successful ? 'alert-success' : 'alert-danger'">
         {{ message }}
       </div>
@@ -49,7 +48,7 @@
   </div>
 </template>
 
-<script setup land="ts">
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useForm } from "vee-validate";
 

@@ -7,15 +7,15 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 
 import NavBar from './layout/NavBar.vue';
 
-export default {
-  components: {
-    NavBar
-  },
-  methods: {
-  }
-};
+// export default {
+//   components: {
+//     NavBar
+//   },
+//   methods: {
+//   }
+// };
 </script>
