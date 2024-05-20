@@ -18,10 +18,9 @@ class TranscriptionService {
     const headers = useAuthService().getAuthHeader();
     // headers.set('Content-Type', 'multipart/form-data');
     const formData = new FormData();
-    for (const key in data) {
-      // if (data.hasOwnProperty(key)) {
-        formData.append(key, data[key]);
-      // }
+    let key: keyof ITranscription;
+    for ( key in data) {
+        formData.append(key, data[key] as string);
     }
     return fetch(API_URL + `transcriptions`, {
       method: 'POST',
